@@ -1,6 +1,8 @@
 torch
+torchcam
 torchvision
 torchsummary
+umap
 pandas
 opencv-python
 albumentations

@@ -3,24 +3,23 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from utils import DEVICE, get_transform, visualize_data, visualize_pred
+from utils import DEVICE, get_lenet_transform, plot_metrics, visualize_data, visualize_pred, visualize_feature_maps
 
 
 # Here are hyperparameters
-# You can experiment with different values to find what work best for you
-CLASS_NUM = 10
+OUTPUT_CLASSES = 10
 LEARNING_RATE = 0.001
 BATCH_SIZE = 64
 EPOCH_NUM = 10
 
 
 class LeNet(nn.Module):
-    def __init__(self, num_classes):
+    def __init__(self, output_classes):
         """
         Initialize the LeNet architecture with flexibility for custom number of output classes.
         
         Args:
-            num_classes (int): Number of output classes for classification.
+            output_classes (int): Number of output classes for classification.
         """
         super(LeNet, self).__init__()
 
@@ -63,7 +62,7 @@ class LeNet(nn.Module):
 
         # Final layer
         # Outputs predictions for each class
-        self.linear2 = nn.Linear(84, num_classes)
+        self.linear2 = nn.Linear(84, output_classes)
 
     def forward(self, x):
         """
@@ -93,24 +92,29 @@ def train_lenet():
     Train the LeNet model on the MNIST dataset and visualize predictions.
     """
     
-    transform = get_transform()
+    transform = get_lenet_transform()
+
+    # Initialize the model, loss function, and optimizer
+    model = LeNet(output_classes=OUTPUT_CLASSES).to(DEVICE)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     # Download and load the MNIST dataset
-    train_dataset = datasets.MNIST(root="./data", train=True, transform=transform, download=True)
-    test_dataset = datasets.MNIST(root="./data", train=False, transform=transform, download=True)
+    train_dataset = datasets.MNIST(root="./mnist_dataset", train=True, transform=transform, download=True)
+    test_dataset = datasets.MNIST(root="./mnist_dataset", train=False, transform=transform, download=True)
 
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
-    # Visualize a batch of training data
-    print("Visualizing sample training data...")
+    # Visualize images and labels
     visualize_data(train_loader)
 
-    # Initialize the model, loss function, and optimizer
-    model = LeNet(num_classes=CLASS_NUM)
-    model.to(DEVICE)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    # Visualize feature maps
+    image, _ = next(iter(train_loader))  # Get a batch of images
+    visualize_feature_maps(model, image[0], target_layers=['conv_layers.0'])  # Adjusted target layer
+
+    train_losses = []
+    train_accuracies = []
 
     # Training loop
     for epoch in range(EPOCH_NUM):
@@ -141,14 +145,20 @@ def train_lenet():
             acc_batch = float(correct_predictions) / float(images.shape[0])
             acc_epoch.append(acc_batch)
 
-        train_accuracy = sum(acc_epoch) / len(acc_epoch) * 100
         train_loss = sum(loss_epoch) / len(loss_epoch)
+        train_accuracy = sum(acc_epoch) / len(acc_epoch) * 100
+
+        train_losses.append(train_loss)
+        train_accuracies.append(train_accuracy)
 
         # Print metrics
         print(f"Epoch [{epoch+1}/{EPOCH_NUM}], "
             f"Loss: {train_loss:.4f}, "
             f"Accuracy: {train_accuracy:.2f}%, "
         )
+
+    # Plot metrics after training
+    plot_metrics(train_losses, train_accuracies)
 
     # Evaluate the model
     model.eval()
@@ -167,7 +177,7 @@ def train_lenet():
     test_accuracy = correct / total * 100
     print(f"Test Accuracy: {test_accuracy:.2f}%")
 
-    # Visualize predictions on test data
+    # Visualize predictions
     visualize_pred(model, test_loader)
 
 
