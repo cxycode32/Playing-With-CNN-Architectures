@@ -1,7 +1,4 @@
-import cv2
 import torch
-import torch.nn.functional as F
-from torchcam.methods import GradCAM, GradCAMpp, ScoreCAM
 from torchvision import transforms
 from sklearn.manifold import TSNE
 import umap
@@ -26,6 +23,15 @@ def get_vgg_transform():
         transforms.Resize((224, 224)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+
+def get_resnet_transform():
+    """Return the data augmentation pipeline for ResNet."""
+    return transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
     ])
 
 
@@ -111,6 +117,28 @@ def plot_gnet_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
     plt.legend()
 
     plt.tight_layout()
+    plt.show()
+
+
+def plot_resnet_metrics(resnet_models, epoch_num, train_accuracies, test_accuracies):
+    # Plot training results
+    plt.figure(figsize=(10, 5))
+    for name in resnet_models.keys():
+        plt.plot(range(1, epoch_num + 1), train_accuracies[name], label=f"{name}")
+    plt.xlabel("Epoch")
+    plt.ylabel("Training Accuracy (%)")
+    plt.title("Training Accuracy Comparison")
+    plt.legend()
+    plt.show()
+
+    # Plot test results
+    plt.figure(figsize=(10, 5))
+    for name in resnet_models.keys():
+        plt.plot(range(1, epoch_num + 1), test_accuracies[name], label=f"{name}")
+    plt.xlabel("Epoch")
+    plt.ylabel("Test Accuracy (%)")
+    plt.title("Test Accuracy Comparison")
+    plt.legend()
     plt.show()
 
 
