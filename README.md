@@ -6,8 +6,8 @@ The repository will include the following CNN architectures:
 
 - **LeNet** ✅ (Completed)
 - **VGG (VGG11, VGG13, VGG16, VGG19)** ✅ (Completed)
-- **GoogLeNet/InceptionNet** 🚧 (In Progress)
-- **ResNet** 🚧 (In Progress)
+- **GoogLeNet/InceptionNet** ✅ (Completed)
+- **ResNet** ✅ (Completed)
 - **EfficientNet** 🚧 (In Progress)
 
 
@@ -207,6 +207,23 @@ Helper function to visualize training and validation loss and accuracy.
 def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 ```
 ![Training Loss And Accuracy](./assets/training_loss_acc_gnet.png)
+
+
+## ResNet Implementation
+
+ResNet (Residual Network) is a deep CNN architecture designed to address the vanishing gradient problem in very deep networks. It introduces residual connections (skip connections) that allow gradients to flow through layers more effectively, enabling the training of much deeper models.
+
+The different ResNet variants mainly differ in the number of residual layers:  
+- **ResNet50**: 50 layers deep, consisting of 3, 4, 6, and 3 residual blocks in four stages.  
+- **ResNet101**: 101 layers deep, with an increased number of residual blocks (3, 4, 23, 3).  
+- **ResNet152**: 152 layers deep, featuring even more residual blocks (3, 8, 36, 3), offering better feature extraction but requiring more computation. 
+
+### Features:  
+
+- **Custom ResNet Implementation:** Implements ResNet with configurable depths (ResNet50, ResNet101, ResNet152).  
+- **Model Selection:** Include function to let the user select 1 model type to train.
+- **Train All Model Types:** Include function to let the user to train all three ResNet variants sequentially and evaluates their performance.  
+- **Visualization:** Plots training and test accuracy curves for comparison.  
 
 
 ## Future Plans
