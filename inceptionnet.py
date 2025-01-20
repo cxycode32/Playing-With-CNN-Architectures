@@ -17,8 +17,8 @@ AUX_LOGITS = True
 
 
 class InceptionNet(nn.Module):
-    """Implementation of InceptionNet (GoogLeNet)."""
     def __init__(self, input_channels, output_channels, output_classes, aux_logits):
+        """Initialize the InceptionNet architecture."""
         super(InceptionNet, self).__init__()
         self.aux_logits = aux_logits
         self.device = DEVICE

@@ -74,7 +74,7 @@ Helper function to visualize training and validation loss and accuracy.
 
 def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 ```
-![Training Loss And Accuracy](./assets/training_loss_acc.png)
+![Training Loss And Accuracy](./assets/training_loss_acc_lenet.png)
 
 #### Predictions Visualization
 Helper function to visualize predictions on test data.
@@ -183,6 +183,30 @@ Helper function to visualize high-dimensional feature space.
 
 def visualize_embeddings(model, dataloader, num_samples=1000, method='tsne')
 ```
+
+
+## GoogLeNet / InceptionNet Implementation
+
+GoogLeNet/InceptionNet is a deep CNN architecture that introduced the Inception module, allowing efficient multi-scale feature extraction while keeping the computational cost reasonable. The model is designed for image classification tasks and includes auxiliary classifiers to improve gradient flow and help with training stability.
+
+### Features:
+
+- **Inception Modules:** The network leverages multiple filter sizes in parallel to capture diverse spatial features.
+- **Auxiliary Classifiers:** Helps with gradient propagation during training and regularization.
+- **Adaptive Average Pooling:** Reduces feature maps to a single value per channel before classification.
+- **Batch Normalization & ReLU Activations:** Used for stable training and improved convergence.
+- **Dropout (0.4 probability):** Prevents overfitting in the final fully connected layer.
+
+### Visualization:
+
+#### Training Loss and Accuracy
+Helper function to visualize training and validation loss and accuracy.
+```
+# utils.py
+
+def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
+```
+![Training Loss And Accuracy](./assets/training_loss_acc_gnet.png)
 
 
 ## Future Plans
