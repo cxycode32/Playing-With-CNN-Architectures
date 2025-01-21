@@ -269,6 +269,9 @@ python efficientnet.py
 #### EfficientNet-b1 with Input Resolution 240x240
 ![EfficientNet-b1](./assets/efficientnet-b1_240x240.png)
 
+#### EfficientNet-b2 with Input Resolution 260x260
+![EfficientNet-b1](./assets/efficientnet-b2_260x260.png)
+
 
 ## Acknowledgments
 
