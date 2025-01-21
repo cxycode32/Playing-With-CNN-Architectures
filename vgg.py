@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from utils import DEVICE, get_vgg_transform, plot_metrics, visualize_feature_maps, visualize_embeddings
+from utils import DEVICE, get_vgg_transform, plot_training_metrics, visualize_feature_maps, visualize_embeddings
 
 
 # Here are hyperparameters
@@ -124,6 +124,7 @@ def select_architecture():
                 continue
 
             selected_architecture = list(VGG_TYPES.keys())[selected_index]
+            
             return selected_architecture
         
         except ValueError:
@@ -148,7 +149,6 @@ def train_vgg():
     # Download and load the CIFAR10 dataset
     train_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=True, transform=transform, download=True)
     test_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=False, transform=transform, download=True)
-
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
@@ -195,7 +195,6 @@ def train_vgg():
 
         train_loss = sum(loss_epoch) / len(loss_epoch)
         train_accuracy = sum(acc_epoch) / len(acc_epoch) * 100
-
         train_losses.append(train_loss)
         train_accuracies.append(train_accuracy)
 
@@ -204,11 +203,11 @@ def train_vgg():
         # Print metrics
         print(f"Epoch [{epoch+1}/{EPOCH_NUM}], "
             f"Loss: {train_loss:.4f}, "
-            f"Accuracy: {train_accuracy:.2f}%, "
+            f"Accuracy: {train_accuracy:.2f}%"
         )
 
     # Plot metrics after training
-    plot_metrics(train_losses, train_accuracies)
+    plot_training_metrics(train_losses, train_accuracies)
 
     # Evaluate the model
     model.eval()

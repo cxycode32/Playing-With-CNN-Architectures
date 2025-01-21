@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from utils import DEVICE, get_lenet_transform, plot_metrics
+from utils import DEVICE, get_lenet_transform, plot_gnet_metrics
 
 
 # Here are hyperparameters
@@ -170,7 +170,6 @@ def train_inception():
     # Download and load the CIFAR10 dataset
     train_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=True, transform=transform, download=True)
     test_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=False, transform=transform, download=True)
-
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
@@ -227,7 +226,7 @@ def train_inception():
         # Print metrics
         print(f"Epoch [{epoch+1}/{EPOCH_NUM}], "
             f"Loss: {loss_batch:.4f}, "
-            f"Accuracy: {train_accuracy:.2f}%, "
+            f"Accuracy: {train_accuracy:.2f}%"
         )
 
     # Before passing train_losses and train_accuracies to plot_metrics, move them to CPU
@@ -235,7 +234,7 @@ def train_inception():
     train_accuracies = [acc if isinstance(acc, float) else acc.detach().cpu().numpy() for acc in train_accuracies]
 
     # Plot metrics after training
-    plot_metrics(train_losses, train_accuracies)
+    plot_gnet_metrics(train_losses, train_accuracies)
 
     # Evaluate the model
     model.eval()

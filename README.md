@@ -1,6 +1,6 @@
 # Playing with CNN Architectures
 
-This repository is a dedicated to experimenting with and implementing different Convolutional Neural Network (CNN) architectures. I created this repo as part of my learning process. If you're still learning like me, hope this repo helps~
+This repository is dedicated to experimenting with and implementing different Convolutional Neural Network (CNN) architectures. I created this repo as part of my learning process. If you're still learning like me, hope this repo helps~
 
 The repository will include the following CNN architectures:
 
@@ -8,7 +8,7 @@ The repository will include the following CNN architectures:
 - **VGG (VGG11, VGG13, VGG16, VGG19)** ✅ (Completed)
 - **GoogLeNet/InceptionNet** ✅ (Completed)
 - **ResNet** ✅ (Completed)
-- **EfficientNet** 🚧 (In Progress)
+- **EfficientNet** ✅ (Completed)
 
 
 ## Installation
@@ -28,33 +28,30 @@ pip install -r requirements.txt
 ```
 ├── lenet.py               # LeNet implementation and training script
 ├── vgg.py                 # VGG implementation and training script
+├── inceptionnet.py        # GoogLeNet/InceptionNet implementation and training script
+├── resnet.py              # ResNet implementation and training script
+├── efficientnet.py        # EfficientNet implementation and training script
 ├── utils.py               # Utility functions
 └── requirements.txt       # Project dependencies
 ```
 
 
-## How to Run
-
-To run the LeNet implementation and training script:
-```bash
-python lenet.py
-```
-
-To run the VGG implementation and training script:
-```bash
-python vgg.py
-```
-
-
 ## LeNet Implementation
 
-LeNet is one of the earliest CNNs, designed for handwritten digit recognition on the MNIST dataset. It consists of 3 convolutional layers, 2 fully connected layers, and uses ReLU activation and max-pooling.
+LeNet is a CNN architecture developed by Yann LeCun for handwritten digit recognition. It consists of alternating convolutional and pooling layers, followed by fully connected layers, making it efficient for image classification tasks.
 
 ### Features:
 
-- Beginner-friendly code with detailed explanations.
 - Training pipeline for MNIST digit classification.
-- Utilities for visualizing data (images and labels) and predictions.
+- Data visualization.
+- Feature maps visualiation.
+- Training metrics visualization.
+- Prediction visualization.
+
+### How to Run?
+```
+python lenet.py
+```
 
 ### Visualization:
 
@@ -62,7 +59,6 @@ LeNet is one of the earliest CNNs, designed for handwritten digit recognition on
 Helper function to visualize a batch of images and labels from the DataLoader.
 ```
 # utils.py
-
 def visualize_data(loader):
 ```
 ![Data Visualization](./assets/data_visualization.png)
@@ -71,8 +67,7 @@ def visualize_data(loader):
 Helper function to visualize training and validation loss and accuracy.
 ```
 # utils.py
-
-def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
+def plot_training_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 ```
 ![Training Loss And Accuracy](./assets/training_loss_acc_lenet.png)
 
@@ -80,7 +75,6 @@ def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 Helper function to visualize predictions on test data.
 ```
 # utils.py
-
 def visualize_pred(model, loader):
 ```
 ![Predictions Visualization](./assets/pred_visualization.png)
@@ -88,15 +82,19 @@ def visualize_pred(model, loader):
 
 ## VGG Implementation
 
-VGG networks are deep CNN architectures that significantly improved performance in large-scale image recognition tasks. The key idea behind VGG is the use of small (3x3) convolutional kernels stacked in depth to learn hierarchical features.
+VGG is a deep convolutional neural network (CNN) architecture developed by the Visual Geometry Group at Oxford. It features a uniform design with 3×3 convolutional layers stacked deep, followed by fully connected layers. VGG is known for its simplicity, depth, and strong performance in image classification tasks, making it a benchmark in computer vision research.
 
 ### Features:
 
-- Beginner-friendly code with detailed explanations.
-- Multiple deep architectures (VGG11, VGG13, VGG16, VGG19) with increasing layers.
-- Utilities for visualizing feature maps and embeddings.
+- Multiple VGG architectures for you to play with.
+- Basic visualizations add on feature maps and embeddings visualizations.
 
-### Training VGG11/VGG13/VGG16/VGG19
+### How to Run?
+```
+python vgg.py
+```
+
+### Training Different VGG Architectures
 
 When training the model, you may realize some take longer to train, this is caused by:
 - **Number of Parameters:** More parameters mean more computations for both forward and backward passes.
@@ -172,7 +170,6 @@ Test Accuracy: 77.77%
 Helper function to visualize the feature maps of selected CNN layer.
 ```
 # utils.py
-
 def visualize_feature_maps(model, image, target_layers):
 ```
 
@@ -180,22 +177,24 @@ def visualize_feature_maps(model, image, target_layers):
 Helper function to visualize high-dimensional feature space.
 ```
 # utils.py
-
-def visualize_embeddings(model, dataloader, num_samples=1000, method='tsne')
+def visualize_embeddings(model, dataloader, num_samples=1000, method='tsne'):
 ```
 
 
 ## GoogLeNet / InceptionNet Implementation
 
-GoogLeNet/InceptionNet is a deep CNN architecture that introduced the Inception module, allowing efficient multi-scale feature extraction while keeping the computational cost reasonable. The model is designed for image classification tasks and includes auxiliary classifiers to improve gradient flow and help with training stability.
+GoogLeNet (InceptionV1) is a deep convolutional neural network architecture developed by Google. It introduces the Inception module, which uses multiple filter sizes in parallel within each layer, allowing the model to capture features at different scales. This architecture reduces computational cost while maintaining high performance in image classification tasks.
 
 ### Features:
 
-- **Inception Modules:** The network leverages multiple filter sizes in parallel to capture diverse spatial features.
+- **Inception Modules:** The network uses multiple filter sizes in parallel to capture diverse spatial features.
 - **Auxiliary Classifiers:** Helps with gradient propagation during training and regularization.
-- **Adaptive Average Pooling:** Reduces feature maps to a single value per channel before classification.
-- **Batch Normalization & ReLU Activations:** Used for stable training and improved convergence.
-- **Dropout (0.4 probability):** Prevents overfitting in the final fully connected layer.
+- Training metrics visualization specifically for GoogLeNet/InceptionNet.
+
+### How to Run?
+```
+python inceptionnet.py
+```
 
 ### Visualization:
 
@@ -203,15 +202,14 @@ GoogLeNet/InceptionNet is a deep CNN architecture that introduced the Inception 
 Helper function to visualize training and validation loss and accuracy.
 ```
 # utils.py
-
-def plot_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
+def plot_gnet_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 ```
 ![Training Loss And Accuracy](./assets/training_loss_acc_gnet.png)
 
 
 ## ResNet Implementation
 
-ResNet (Residual Network) is a deep CNN architecture designed to address the vanishing gradient problem in very deep networks. It introduces residual connections (skip connections) that allow gradients to flow through layers more effectively, enabling the training of much deeper models.
+ResNet (Residual Network) is a deep CNN architecture that introduces residual connections, allowing gradients to flow more easily through the network. By using skip connections, ResNet can train very deep networks without suffering from vanishing gradients, making it highly effective for image classification and other computer vision tasks.
 
 The different ResNet variants mainly differ in the number of residual layers:  
 - **ResNet50**: 50 layers deep, consisting of 3, 4, 6, and 3 residual blocks in four stages.  
@@ -220,10 +218,15 @@ The different ResNet variants mainly differ in the number of residual layers:
 
 ### Features:  
 
-- **Custom ResNet Implementation:** Implements ResNet with configurable depths (ResNet50, ResNet101, ResNet152).  
-- **Model Selection:** Include function to let the user select 1 model type to train.
-- **Train All Model Types:** Include function to let the user to train all three ResNet variants sequentially and evaluates their performance.  
+- **Different ResNet Variants:** Different ResNet variants for you to play with. 
+- **Model Selection:** You can either choose one variant to train.
+- **Train All Model Types:** Or you can also train all three ResNet variants sequentially and evaluates their performance.  
 - **Visualization:** Plots training and test accuracy curves for comparison.  
+
+### How to Run?
+```
+python resnet.py
+```
 
 ### Visualization:
 
@@ -234,18 +237,37 @@ Helper function to visualize the training accuracies of different ResNet variant
 
 def plot_resnet_metrics(resnet_models, epoch_num, train_accuracies):
 ```
-![ResNet Training Accuracy Comparison 1](resnet_train_acc_comparison_1.png)
-![ResNet Training Accuracy Comparison 2](resnet_train_acc_comparison_2.png)
-![ResNet Training Accuracy Comparison 3](resnet_train_acc_comparison_3.png)
+![ResNet Training Accuracy Comparison 1](./assets/resnet_train_acc_comparison_1.png)
+![ResNet Training Accuracy Comparison 2](./assets/resnet_train_acc_comparison_2.png)
+![ResNet Training Accuracy Comparison 3](./assets/resnet_train_acc_comparison_3.png)
 
 
-## Future Plans
+## EfficientNet Implementation
 
-The repository will be expanded to include more CNN architectures such as:
+EfficientNet is a family of CNN architectures that optimize accuracy and efficiency by scaling depth, width, and resolution in a balanced way. Using a compound scaling method, EfficientNet achieves state-of-the-art performance with fewer parameters and lower computational cost, making it highly efficient for image classification tasks.
 
-- **GoogLeNet/InceptionNet:** Focuses on computational efficiency.
-- **ResNet:** Introduces residual connections for training deeper networks.
-- **EfficientNet:** Optimizes both accuracy and computational cost.
+Key Components of EfficientNet:
+- **Depth:** This refers to the number of layers in the network. Increasing depth can improve accuracy but also increases the computational cost.
+- **Width:** This refers to the number of channels (features) in each layer. Increasing width increases the capacity of the network.
+- **Resolution:** This refers to the input image resolution. Higher resolutions can help the model learn finer details but increase the computational burden.
+
+### Features:
+
+- Multiple EfficientNet versions for you to play with.
+- Basic visualization.
+
+### How to Run?
+```
+python efficientnet.py
+```
+
+### Visualization
+
+#### EfficientNet-b0 with Input Resolution 240x240
+![EfficientNet-b0](./assets/efficientnet-b0_240x240.png)
+
+#### EfficientNet-b1 with Input Resolution 240x240
+![EfficientNet-b1](./assets/efficientnet-b1_240x240.png)
 
 
 ## Acknowledgments

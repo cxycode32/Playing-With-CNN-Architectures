@@ -159,7 +159,7 @@ def select_net():
 
 def train_resnet():
     """
-    Train the selected ResNet model.
+    Train the selected ResNet model or train all model variants.
     """
     transform = get_resnet_transform()
 
@@ -169,7 +169,6 @@ def train_resnet():
     # Download and load the CIFAR10 dataset
     train_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=True, transform=transform, download=True)
     test_dataset = datasets.CIFAR10(root="./cifar10_datasets", train=False, transform=transform, download=True)
-
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
@@ -220,7 +219,6 @@ def train_resnet():
 
             train_loss = sum(loss_epoch) / len(loss_epoch)
             train_accuracy = sum(acc_epoch) / len(acc_epoch) * 100
-
             train_losses[name].append(train_loss)
             train_accuracies[name].append(train_accuracy)
 
@@ -229,7 +227,7 @@ def train_resnet():
             # Print metrics
             print(f"Epoch [{epoch+1}/{EPOCH_NUM}], "
                 f"Loss: {train_loss:.4f}, "
-                f"Accuracy: {train_accuracy:.2f}%, "
+                f"Accuracy: {train_accuracy:.2f}%"
             )
 
         # Evaluate the model

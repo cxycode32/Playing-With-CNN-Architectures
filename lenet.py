@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import DataLoader
 from torchvision import datasets
-from utils import DEVICE, get_lenet_transform, plot_metrics, visualize_data, visualize_pred, visualize_feature_maps
+from utils import DEVICE, get_lenet_transform, plot_training_metrics, visualize_data, visualize_pred, visualize_feature_maps
 
 
 # Here are hyperparameters
@@ -102,7 +102,6 @@ def train_lenet():
     # Download and load the MNIST dataset
     train_dataset = datasets.MNIST(root="./mnist_dataset", train=True, transform=transform, download=True)
     test_dataset = datasets.MNIST(root="./mnist_dataset", train=False, transform=transform, download=True)
-
     train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True)
     test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False)
 
@@ -110,8 +109,8 @@ def train_lenet():
     visualize_data(train_loader)
 
     # Visualize feature maps
-    image, _ = next(iter(train_loader))  # Get a batch of images
-    visualize_feature_maps(model, image[0], target_layers=['conv_layers.0'])  # Adjusted target layer
+    image, _ = next(iter(train_loader))
+    visualize_feature_maps(model, image[0], target_layers=['conv_layers.0'])
 
     train_losses = []
     train_accuracies = []
@@ -147,18 +146,17 @@ def train_lenet():
 
         train_loss = sum(loss_epoch) / len(loss_epoch)
         train_accuracy = sum(acc_epoch) / len(acc_epoch) * 100
-
         train_losses.append(train_loss)
         train_accuracies.append(train_accuracy)
 
         # Print metrics
         print(f"Epoch [{epoch+1}/{EPOCH_NUM}], "
             f"Loss: {train_loss:.4f}, "
-            f"Accuracy: {train_accuracy:.2f}%, "
+            f"Accuracy: {train_accuracy:.2f}%"
         )
 
-    # Plot metrics after training
-    plot_metrics(train_losses, train_accuracies)
+    # Plot metrics
+    plot_training_metrics(train_losses, train_accuracies)
 
     # Evaluate the model
     model.eval()
