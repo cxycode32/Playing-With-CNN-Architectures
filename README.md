@@ -225,6 +225,19 @@ The different ResNet variants mainly differ in the number of residual layers:
 - **Train All Model Types:** Include function to let the user to train all three ResNet variants sequentially and evaluates their performance.  
 - **Visualization:** Plots training and test accuracy curves for comparison.  
 
+### Visualization:
+
+#### ResNet Training Accuracy Comparison
+Helper function to visualize the training accuracies of different ResNet variants.
+```
+# utils.py
+
+def plot_resnet_metrics(resnet_models, epoch_num, train_accuracies):
+```
+![ResNet Training Accuracy Comparison 1](resnet_train_acc_comparison_1.png)
+![ResNet Training Accuracy Comparison 2](resnet_train_acc_comparison_2.png)
+![ResNet Training Accuracy Comparison 3](resnet_train_acc_comparison_3.png)
+
 
 ## Future Plans
 
