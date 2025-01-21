@@ -121,6 +121,10 @@ def plot_gnet_metrics(train_loss, train_acc, val_loss=None, val_acc=None):
 
 
 def plot_resnet_metrics(resnet_models, epoch_num, train_accuracies, test_accuracies):
+    """
+    Plots the training and test accuracy for different ResNet models.
+    """
+    
     # Plot training results
     plt.figure(figsize=(10, 5))
     for name in resnet_models.keys():

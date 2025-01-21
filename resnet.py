@@ -234,26 +234,29 @@ def train_resnet():
 
         # Evaluate the model
         model.eval()
-        correct, total, test_loss = 0, 0, 0.0
+        test_loss_epoch, test_acc_epoch = [], []
+        correct, total = 0, 0
 
         with torch.no_grad():
             for images, labels in test_loader:
                 images, labels = images.to(DEVICE), labels.to(DEVICE)
 
                 outputs = model(images)
-                loss = criterion(outputs, labels)
-                test_loss += loss.item()
+                test_loss = criterion(outputs, labels)
+                test_loss_epoch.append(test_loss.item())
 
-                _, preds = torch.max(outputs, 1)
-                correct += (preds == labels).sum().item()
+                _, preds = outputs.max(1)
+                correct = (preds == labels).sum()
                 total += labels.size(0)
+                test_acc_epoch.append(float(correct) / float(images.shape[0]))
 
-        test_accuracy = correct / total * 100
+            test_loss = sum(test_loss_epoch) / len(test_loss_epoch)
+            test_accuracy = sum(test_acc_epoch) / len(test_acc_epoch) * 100
 
-        test_losses[name].append(test_loss / len(test_loader))
-        test_accuracies[name].append(test_accuracy)
+            test_losses[name].append(test_loss)
+            test_accuracies[name].append(test_accuracy)
 
-        print(f"{name} Test Accuracy: {test_accuracy[name]:.2f}%")
+            print(f"{name} Test Accuracy: {test_accuracy:.2f}%")
 
     plot_resnet_metrics(RESNET_TYPES, EPOCH_NUM, train_accuracies, test_accuracies)
     
