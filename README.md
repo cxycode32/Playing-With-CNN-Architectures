@@ -275,4 +275,4 @@ python efficientnet.py
 
 ## Acknowledgments
 
-This implementation is inspired by the ![Machine-Learning-Collection](https://github.com/aladdinpersson/Machine-Learning-Collection) repository by ![aladdinpersson](https://github.com/aladdinpersson). The code structure and visualization techniques are adapted and extended from this collection.
+This implementation is inspired by the [Machine-Learning-Collection](https://github.com/aladdinpersson/Machine-Learning-Collection) repository by [aladdinpersson](https://github.com/aladdinpersson). The code structure and visualization techniques are adapted and extended from this collection.
